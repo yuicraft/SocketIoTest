@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title> SOCKET.IO ROOM </title>
+    <meta charset="utf8" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //변수선언
+            var room = prompt('방 이름을 입력하세요.', '');
+            var socket = io.connect();
+
+            //소켓 이벤트 연결
+            socket.emit('join', room);
+            socket.on('message', function (data) {
+                $('<p>' + data + '</p>').appendTo('body');
+            });
+
+            //버튼 이벤트
+            $('#btn').click(function () {
+                var msg = $('#msg').val();
+                socket.emit('message', msg);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input id="msg" type="text" style="width:100px;" />
+    <input id="btn" type="button" value="send" />
+</body>
+
+</html>
